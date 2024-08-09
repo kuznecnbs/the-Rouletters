@@ -8,7 +8,9 @@ var inv2: [String] = ["-", "-", "-", "-"]
 var shot = 0
 var action = 7
 
-var armor1 = false, armor2 = false
+var armor1 = false, armor2 = false, double_damage = false
+var baraban: [Bool] = [false, false, false, false, false, false]
+var item_list: [String] = ["Аптечка", "Ножовка", "Броня"]
 
 func clearConsole(){
     print("\u{001b}[2J")
