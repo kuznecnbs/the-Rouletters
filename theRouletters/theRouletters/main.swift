@@ -1,8 +1,31 @@
 import Foundation
 
+var turn: Bool //true == player1, false == player2
+var life1 = 3, life2 = 2, item_number: Int
+var choise1 = -1, choise2 = -1 //0 взять оружие, 1 стрельба во врага, 2 стрельба в себя
+var inv1: [String] = ["-", "-", "-", "-"]
+var inv2: [String] = ["-", "-", "-", "-"]
+var shot = 0
+var action = 7
+
+var armor1 = false, armor2 = false
+
 func clearConsole(){
     print("\u{001b}[2J")
     print("\u{001b}[H")
+}
+
+func game(){
+    
+}
+
+func players(){
+    clearConsole()
+    print("Введите имя для игрока 1")
+    var player1 = readLine()
+    print("Введите имя для игрока 2")
+    var player2 = readLine()
+    game()
 }
 
 func information(){
@@ -35,7 +58,7 @@ func menu(){
         print("   1  * Приступим *", "\n   2  *  Памятка  *", "\n   3  *   Выход   *")
         var function = readLine()
         if function == "1" || function=="Приступим" || function=="приступим" || function=="ПРИСТУПИМ"{
-            clearConsole()
+            players()
         }
         else if function == "2" || function=="Памятка" || function=="памятка" || function=="ПАМЯТКА"{
             information()
