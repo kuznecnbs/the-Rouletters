@@ -3,7 +3,7 @@ import Foundation
 var player1: String?
 var player2: String?
 var turn = true //true == player1, false == player2
-var life1 = 3, life2 = 2, item_number: Int
+var life1 = 3, life2 = 3, item_number: Int
 var choise1 = -1, choise2 = -1 //0 взять оружие, 1 стрельба во врага, 2 стрельба в себя
 var inv1: [String] = ["-", "-", "-", "-"]
 var inv2: [String] = ["-", "-", "-", "-"]
@@ -37,13 +37,13 @@ func new_roulete(){
             }
         }
     }
-    print("Сегодня патронов у нас будет: ", bullets)
+    print("Сегодня патронов у нас будет:", bullets)
     sleep(2)
 }
 
 func game(){
-    inv1[0] = item_list[Int.random(in: 1...3)];inv1[1] = "-";inv1[2] = "-";inv1[3] = "-";
-    inv2[0] = item_list[Int.random(in: 1...3)];inv2[1] = "-";inv2[2] = "-";inv2[3] = "-";
+    inv1[0] = item_list[Int.random(in: 0...2)];inv1[1] = "-";inv1[2] = "-";inv1[3] = "-";
+    inv2[0] = item_list[Int.random(in: 0...2)];inv2[1] = "-";inv2[2] = "-";inv2[3] = "-";
     life1 = 3; life2 = 3
     new_roulete()
     turn = true
@@ -73,7 +73,6 @@ func game(){
 func players(){
     clearConsole()
     print("Введите имя для игрока 1")
-    let inputedName = readLine()
     player1 = readLine()
     print("Введите имя для игрока 2")
     player2 = readLine()
