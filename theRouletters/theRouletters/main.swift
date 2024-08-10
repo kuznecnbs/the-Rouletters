@@ -1,6 +1,8 @@
 import Foundation
 
-var turn: Bool //true == player1, false == player2
+var player1: String?
+var player2: String?
+var turn = true //true == player1, false == player2
 var life1 = 3, life2 = 2, item_number: Int
 var choise1 = -1, choise2 = -1 //0 взять оружие, 1 стрельба во врага, 2 стрельба в себя
 var inv1: [String] = ["-", "-", "-", "-"]
@@ -17,16 +19,64 @@ func clearConsole(){
     print("\u{001b}[H")
 }
 
-func game(){
+func items(){
     
+}
+
+func new_roulete(){
+    for i in 0...5{
+        baraban[i] = false
+    }
+    let bullets = Int.random(in: 1...4)
+    for _ in 1...bullets{
+        while true{
+            let camora = Int.random(in: 0...5)
+            if baraban[camora] == false{
+                baraban[camora] = true
+                break
+            }
+        }
+    }
+    print("Сегодня патронов у нас будет: ", bullets)
+    sleep(2)
+}
+
+func game(){
+    inv1[0] = item_list[Int.random(in: 1...3)];inv1[1] = "-";inv1[2] = "-";inv1[3] = "-";
+    inv2[0] = item_list[Int.random(in: 1...3)];inv2[1] = "-";inv2[2] = "-";inv2[3] = "-";
+    life1 = 3; life2 = 3
+    new_roulete()
+    turn = true
+    while true{
+        action = 7
+        if life1 == 0{
+            clearConsole()
+            print("Поздравляю ", player2 ?? "Игрок 2", " с его победой")
+            sleep(3)
+            return
+        }
+        else if life2 == 0{
+            clearConsole()
+            print("Поздравляю ", player1 ?? "Игрок 1", " с его победой")
+            sleep(3)
+            return
+        }
+        if shot == 6{
+            print("Кхм, вы сделали 6 выстрелов и ещё живы?\nВремя нового раунда")
+            shot = 0
+            items()
+            new_roulete()
+        }
+    }
 }
 
 func players(){
     clearConsole()
     print("Введите имя для игрока 1")
-    var player1 = readLine()
+    let inputedName = readLine()
+    player1 = readLine()
     print("Введите имя для игрока 2")
-    var player2 = readLine()
+    player2 = readLine()
     game()
 }
 
@@ -58,7 +108,7 @@ func menu(){
               "  \\__|_||_\\___| |_|_\\___/\\_,_|_\\___|\\__|\n",
               "                                        ")
         print("   1  * Приступим *", "\n   2  *  Памятка  *", "\n   3  *   Выход   *")
-        var function = readLine()
+        let function = readLine()
         if function == "1" || function=="Приступим" || function=="приступим" || function=="ПРИСТУПИМ"{
             players()
         }
