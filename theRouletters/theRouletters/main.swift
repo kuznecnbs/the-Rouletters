@@ -21,9 +21,8 @@ func clearConsole(){
 }
 
 func addItems(){
-    var count = 0
     for _ in 1...2{
-        for j in 1...4{
+        for j in 0...3{
             if inv1[j] == "-"{
                 inv1[j] = item_list[Int.random(in: 0...2)]
                 break
@@ -31,7 +30,7 @@ func addItems(){
         }
     }
     for _ in 1...2{
-        for j in 1...4{
+        for j in 0...3{
             if inv2[j] == "-"{
                 inv2[j] = item_list[Int.random(in: 0...2)]
                 break
@@ -56,7 +55,7 @@ func reloadBaraban(){
     }
     currentCamora = 0
     print("Сегодня патронов у нас будет:", bullets)
-    sleep(1)
+    sleep(3)
 }
 
 func rotate_baraban(){
@@ -64,7 +63,7 @@ func rotate_baraban(){
 }
 
 
-func printInterface(){
+func printInterface(shot: Bool = false){
     if turn == true{
         clearConsole()
         print("Очередь", player1, "нажать на спуск\n")
@@ -76,19 +75,29 @@ func printInterface(){
         for i in 0...3{
             print(i+1, ":", inv2[i], ";", terminator: "")
         }
-        if choise == "-1"{
-            print("\n\nНажми 0 чтобы взять пушку\n\n")
-        }
-        else if choise == "0" && holdGun == true{
-            print("\n\nНажми 1 чтобы стрельнуть в опонента\n", "\nНажми 2 чтобы стрельнуть в себя")
+        if choise == "0" && holdGun == true{
+            print("\n\nНажми 1 чтобы стрельнуть в опонента\n", "\nНажми 2 чтобы стрельнуть в себя\n")
         }
         else if choise == "1" && holdGun == true{
-            
+            if shot == true{
+                print("\n\nBANG!\n\n")
+            }
+            else{
+                print("\n\nЩёлк\n\n")
+            }
         }
         else if choise == "2" && holdGun == true{
-            
+            if shot == true{
+                print("\n\nBANG!\n\n")
+            }
+            else{
+                print("\n\nЩёлк\n\n")
+            }
         }
-        print(player1, "HP =", life1, terminator: "")
+        else{
+            print("\n\nНажми 0 чтобы взять пушку\n\n")
+        }
+        print(player1, "\tHP =", life1, terminator: "")
         if armor1 == true{
             print("\tARM", terminator: "")
         }
@@ -102,8 +111,131 @@ func printInterface(){
         print("")
     }
     else{
-        
+        clearConsole()
+        print("Очередь", player2, "нажать на спуск\n")
+        print(player1, "\tHP =", life1)
+        if armor1 == true{
+            print("\tARM")
+        }
+        print("")
+        for i in 0...3{
+            print(i+1, ":", inv1[i], ";", terminator: "")
+        }
+        if choise == "0" && holdGun == true{
+            print("\n\nНажми 1 чтобы стрельнуть в опонента\n", "\nНажми 2 чтобы стрельнуть в себя\n")
+        }
+        else if choise == "1" && holdGun == true{
+            if shot == true{
+                print("\n\nBANG!\n\n")
+            }
+            else{
+                print("\n\nЩёлк\n\n")
+            }
+        }
+        else if choise == "2" && holdGun == true{
+            if shot == true{
+                print("\n\nBANG!\n\n")
+            }
+            else{
+                print("\n\nЩёлк\n\n")
+            }
+        }
+        else{
+            print("\n\nНажми 0 чтобы взять пушку\n\n")
+        }
+        print(player2, "\tHP =", life2, terminator: "")
+        if armor2 == true{
+            print("\tARM", terminator: "")
+        }
+        if double_damage == true{
+            print("\tDMG+")
+        }
+        print("")
+        for i in 0...3{
+            print(i+1, ":", inv2[i], ";", terminator: "")
+        }
+        print("")
     }
+}
+
+func pullTheTrigger() -> Bool{
+    if turn == true{
+        if choise == "1"{
+            if baraban[currentCamora] == true{
+                var damage = 1
+                if double_damage == true{
+                    damage += 1
+                    double_damage = false
+                }
+                if armor2 == true{
+                    damage = 0
+                    armor2 = false
+                }
+                life2 -= damage
+                rotate_baraban()
+                return true
+            }
+            rotate_baraban()
+            return false
+        }
+        else if choise == "2"{
+            if baraban[currentCamora] == true{
+                var damage = 1
+                if double_damage == true{
+                    damage += 1
+                    double_damage = false
+                }
+                if armor1 == true{
+                    damage = 0
+                    armor1 = false
+                }
+                life1 -= damage
+                rotate_baraban()
+                return true
+            }
+            rotate_baraban()
+            return false
+        }
+    }
+    else{
+        if choise == "1"{
+            if baraban[currentCamora] == true{
+                var damage = 1
+                if double_damage == true{
+                    damage += 1
+                    double_damage = false
+                }
+                if armor1 == true{
+                    damage = 0
+                    armor1 = false
+                }
+                life1 -= damage
+                rotate_baraban()
+                return true
+            }
+            rotate_baraban()
+            return false
+        }
+        else if choise == "2"{
+            if baraban[currentCamora] == true{
+                var damage = 1
+                if double_damage == true{
+                    damage += 1
+                    double_damage = false
+                }
+                if armor2 == true{
+                    damage = 0
+                    armor2 = false
+                }
+                life2 -= damage
+                rotate_baraban()
+                return true
+            }
+            rotate_baraban()
+            return false
+        }
+    }
+    return false
 }
 
 func game(){
@@ -129,20 +261,41 @@ func game(){
         }
         if currentCamora >= 6{
             print("Кхм, вы сделали 6 выстрелов и ещё живы?\nВремя нового раунда")
+            sleep(1)
             addItems()
             reloadBaraban()
         }
-        if turn == true{
-            while choise != "0"{
-                printInterface()
-                choise = readLine() ?? "-1"
-                
-            }
-            holdGun = true
-        }
-        else{
+        while choise != "0"{
+            printInterface()
+            choise = readLine() ?? "-1"
             
         }
+        holdGun = true
+        printInterface()
+        while choise != "1" && choise != "2"{
+            choise = readLine() ?? "-1"
+            
+        }
+        let shot = pullTheTrigger()
+        printInterface(shot: shot)
+        sleep(1)
+        if turn == true{
+            if shot == false && choise == "2"{
+               turn = true
+            }
+            else{
+                turn = false
+            }
+        }
+        else{
+            if shot == false && choise == "2"{
+               turn = false
+            }
+            else{
+                turn = true
+            }
+        }
+        choise = "-1"
     }
 }
 
