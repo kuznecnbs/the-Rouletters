@@ -20,6 +20,93 @@ func clearConsole(){
     print("\u{001b}[H")
 }
 
+func findItemInInventory(inv: [String], nameOfItem: String) -> Int{
+    for i in 0..<inv.count{
+        if inv[i] == nameOfItem{
+            return i
+        }
+    }
+    return 0
+}
+
+func useItemInInventory(inv: [String], numberOfItem: Int){
+    switch inv[numberOfItem]{
+    case "Аптечка":
+        aidkit()
+        return
+    case "Ножовка":
+        saw()
+        return
+    case "Броня":
+        armor()
+        return
+    default:
+        return
+    }
+}
+
+func aidkit(){
+    if turn == true{
+        if life1 >= 3{
+            print("Максимум хп")
+            sleep(1)
+        }
+        else{
+            life1 += 1
+            inv1[findItemInInventory(inv: inv1, nameOfItem: "Аптечка")] = "-"
+        }
+    }
+    else{
+        if life2 >= 3{
+            print("Максимум хп")
+            sleep(1)
+        }
+        else{
+            life2 += 1
+            inv2[findItemInInventory(inv: inv2, nameOfItem: "Аптечка")] = "-"
+        }
+    }
+}
+
+func saw(){
+    if double_damage == true{
+        print("Урон уже удвоен")
+        sleep(1)
+    }
+    else{
+        double_damage = true
+        if turn == true{
+            inv1[findItemInInventory(inv: inv1, nameOfItem: "Ножовка")] = "-"
+        }
+        else{
+            inv2[findItemInInventory(inv: inv2, nameOfItem: "Ножовка")] = "-"
+        }
+    }
+}
+
+func armor(){
+    if turn == true{
+        if armor1 == true{
+            print("Броня уже использована")
+            sleep(1)
+        }
+        else{
+            armor1 = true
+            inv1[findItemInInventory(inv: inv1, nameOfItem: "Броня")] = "-"
+        }
+    }
+    else{
+        if armor2 == true{
+            print("Броня уже использована")
+            sleep(1)
+        }
+        else{
+            armor2 = true
+            inv1[findItemInInventory(inv: inv1, nameOfItem: "Броня")] = "-"
+        }
+    }
+}
+
 func addItems(){
     for _ in 1...2{
         for j in 0...3{
@@ -175,6 +262,7 @@ func pullTheTrigger() -> Bool{
                 rotate_baraban()
                 return true
             }
+            double_damage = false
             rotate_baraban()
             return false
         }
@@ -193,6 +281,7 @@ func pullTheTrigger() -> Bool{
                 rotate_baraban()
                 return true
             }
+            double_damage = false
             rotate_baraban()
             return false
         }
@@ -213,6 +302,7 @@ func pullTheTrigger() -> Bool{
                 rotate_baraban()
                 return true
             }
+            double_damage = false
             rotate_baraban()
             return false
         }
@@ -231,6 +321,7 @@ func pullTheTrigger() -> Bool{
                 rotate_baraban()
                 return true
             }
+            double_damage = false
             rotate_baraban()
             return false
         }
@@ -268,7 +359,42 @@ func game(){
         while choise != "0"{
             printInterface()
             choise = readLine() ?? "-1"
-            
+            if turn == true{
+                switch choise{
+                case "1":
+                    useItemInInventory(inv: inv1, numberOfItem: 0)
+                    break
+                case "2":
+                    useItemInInventory(inv: inv1, numberOfItem: 1)
+                    break
+                case "3":
+                    useItemInInventory(inv: inv1, numberOfItem: 2)
+                    break
+                case "4":
+                    useItemInInventory(inv: inv1, numberOfItem: 3)
+                    break
+                default:
+                    break
+                }
+            }
+            else{
+                switch choise{
+                case "1":
+                    useItemInInventory(inv: inv2, numberOfItem: 0)
+                    break
+                case "2":
+                    useItemInInventory(inv: inv2, numberOfItem: 1)
+                    break
+                case "3":
+                    useItemInInventory(inv: inv2, numberOfItem: 2)
+                    break
+                case "4":
+                    useItemInInventory(inv: inv2, numberOfItem: 3)
+                    break
+                default:
+                    break
+                }
+            }
         }
         holdGun = true
         printInterface()
@@ -278,6 +404,7 @@ func game(){
         }
         let shot = pullTheTrigger()
         printInterface(shot: shot)
+        holdGun = false
         sleep(1)
         if turn == true{
             if shot == false && choise == "2"{
